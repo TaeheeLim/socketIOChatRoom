@@ -34,6 +34,8 @@ function showRoom(){
     form.addEventListener("submit", handleMessageSubmit)
 }
 
+//서버에 socket emit해서 방 이름 전송
+//그리고 서버에서 프론트의 showRoom 메소드를 실행
 function handleRoomSubmit(event){
     event.preventDefault();
     const input = form.querySelector('input')
