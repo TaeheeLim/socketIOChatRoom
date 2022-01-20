@@ -17,7 +17,7 @@ function addMessage(message){
 
 function handleMessageSubmit(event){
     event.preventDefault();
-    const input = room.querySelector('input')
+    const input = room.querySelector('#msg input')
     const value = input.value
     socket.emit("new_message", input.value, roomName, () => {
         addMessage(`You : ${value}`);
@@ -25,13 +25,21 @@ function handleMessageSubmit(event){
     input.value = ''
 }
 
+function handleNicknameSubmit(event){
+    event.preventDefault();
+    const input = room.querySelector('#name input')
+    socket.emit('nickname', input.value)
+}
+
 function showRoom(){
     welcome.hidden = true
     room.hidden = false
     const h3 = room.querySelector('h3');
     h3.innerText = `Room ${roomName}`
-    const form = room.querySelector("form")
-    form.addEventListener("submit", handleMessageSubmit)
+    const msgForm = room.querySelector("#msg")
+    const nameForm = room.querySelector("#name")
+    msgForm.addEventListener("submit", handleMessageSubmit)
+    nameForm.addEventListener("submit", handleNicknameSubmit)
 }
 
 //서버에 socket emit해서 방 이름 전송
@@ -50,15 +58,32 @@ function handleRoomSubmit(event){
 
 form.addEventListener("submit", handleRoomSubmit);
 
-socket.on("welcome", () => {
-    addMessage("someone joined!!")
+socket.on("welcome", (user, newCount) => {
+    const h3 = room.querySelector('h3');
+    h3.innerText = `Room ${roomName} (${newCount})`
+    addMessage(`${user} arrived`)
 }) 
 
-socket.on("bye", () => {
-    addMessage("someone left!!")
+socket.on("bye", (left, newCount) => {
+    const h3 = room.querySelector('h3');
+    h3.innerText = `Room ${roomName} (${newCount})`
+    addMessage(`${left} left`)
 })
 
 socket.on("new_message", addMessage)
+
+socket.on("room_change", (rooms) => {
+    const roomList = welcome.querySelector('ul')
+    if(rooms.length === 0 ){
+        roomList.innerHTML = ''
+        return
+    }
+    rooms.forEach(room => {
+        const li = document.createElement('li')
+        li.innerText = room
+        roomList.append(li)
+    })
+})
 
 
 
