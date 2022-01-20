@@ -9,6 +9,7 @@ room.hidden = true
 let roomName = ''
 
 function addMessage(message){
+    console.log(message)
     const ul = room.querySelector('ul')
     const li = document.createElement('li')
     li.innerText = message
