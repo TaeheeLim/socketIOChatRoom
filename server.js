@@ -20,6 +20,10 @@ wsServer.on("connection", socket => {
         socket.join(roomName)
         done();
         socket.to(roomName).emit("welcome");
+
+    })
+    socket.on("offer", (offer, roomName) => {
+        socket.to(roomName).emit("offer", offer)
     })
 })
 
