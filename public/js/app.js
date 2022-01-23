@@ -151,11 +151,13 @@ function makeConnection(){
         .forEach((track) => myPeerConnection.addTrack(track, myStream))
 }
 
+//IceCandidate 서버로 전송
 function handleIce(data){
     console.log("sent the candidate")
     socket.emit("ice", data.candidate, roomName) 
 }
 
+//div에다가 상대로부터 받음 stream을 뿌림
 function handleAddStream(data){
     const peerFace = document.getElementById("peerFace")
     console.log("got an event from my peer")
