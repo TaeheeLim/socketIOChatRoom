@@ -33,7 +33,7 @@ async function getCameras() {
     console.log(e);
   }
 }
-
+//async await 비동기 통신의 순서를 보장한다
 async function getMedia(deviceId) {
   const initialConstrains = {
     audio: true,
@@ -173,7 +173,14 @@ function makeConnection() {
     ],
   });
   myPeerConnection.addEventListener("icecandidate", handleIce);
-  myPeerConnection.addEventListener("addstream", handleAddStream);
+  myPeerConnection.addEventListener("track", handleTrack);
+  
+  function handleTrack(data) {
+    console.log("handle track")
+    const peerFace = document.querySelector("#peerFace")
+    peerFace.srcObject = data.streams[0]
+  }
+
   myStream
     .getTracks()
     .forEach((track) => myPeerConnection.addTrack(track, myStream));

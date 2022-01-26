@@ -29,8 +29,8 @@ wsServer.on("connection", (socket) => {
   });
 });
 
-const handleListen = () => console.log(`Listening on http://localhost:3000`);
-httpServer.listen(3000, handleListen);
+const handleListen = () => console.log(`Listening on http://localhost:4000`);
+httpServer.listen(4000, handleListen);
 //이하 소켓 아이오
 // private room 말고 public room 구함
 // function publicRooms(){
